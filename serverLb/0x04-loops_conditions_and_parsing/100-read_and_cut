@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+# this script displays the content of the file /etc/passwd
+# display only the username, user id and Home directory path for the user
+
+file_name="/etc/passwd"
+i=0
+line=0
+IFS=':'
+if test -f $file_name
+then
+	line="$(wc -l < $file_name)"
+	fields=('username' 'password' 'user_id' 'group_id' 'user_id_info' 'home_dir' 'command')
+	while [[ $i -lt $line ]]
+	do
+		i="$((i + 1))"
+		read -r -a fields < <(tail -n 1 <(head -n $i < $file_name))
+		echo "${fields[0]}:${fields[2]}:${fields[5]}"
+	done
+fi
